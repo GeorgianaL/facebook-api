@@ -1,43 +1,42 @@
 import React from "react";
 import FB from "fb";
-import { FacebookProvider, Share, Feed } from "react-facebook";
+import { FacebookProvider, Share, Feed, Initialize } from "react-facebook";
 import "./App.css";
 
 const appId = "279858939324534";
-const accessToken =
-  "EAADZBh7yqaHYBAFHT5rIxZCyN8Sbs3XRl7BM9VibeyDmKTyIS6QeRDTA1v2ClZC6rPiz0ji4Skn9Y2ZCIrwm1SiLW1w68lmZBps2gH8bWtLLPY1YRYn3Di7cRVzayFxkronoMO4ihzNZAAmoCqZAXVWwhqwdd3ZCyTBnMpTmOdZA15ZCFt9tq2C5E2V6Avirsli3zKbbUMF4p8uKfCMPprfZBsv";
-const title = "Test create post on facebook api";
-const text = "description will go here";
-const img1 = "https://www.bigstockphoto.com/images/homepage/module-6.jpg";
-const img2 =
+const title = "Title: Test create post on facebook api";
+const text = `
+  Test Prerequisites
+  Open Graph Markup
+  Before you enable sharing, you should mark up your page's HTML with Open Graph tags.
+
+  This helps make sure that when people share from your site, your content appears the way you want on Facebook, with a title, description, and image thumbnail.
+
+If you have a mobile subdomain, you can optimize your content by Optimizing for a Mobile Subdomain.`;
+const img =
   "https://i.pinimg.com/564x/72/68/95/726895ea002ac968f25280432a5b3b48.jpg";
 
 const postUrl = {
-  href: "http://www.google.com",
-  title: title,
-  quote: text,
-  image: img2,
-  "og:image:width": 600,
-  "og:image:height": 400
+  // href: `http://www.google.com?og:image=${img2}&og:image:height=400&og:image:width=600`,
+  href: "https://job-board.azzurehr.co.ro/",
+  quote: `${title}
+    ${text}
+  `,
+  redirectURI: "https://job-board.azzurehr.co.ro/",
+  data: "this is data"
 };
 
-const testData = () => (
-  <div>
-    <p>in datda{text}</p>
-    <img src={img1} alt="test" />
-  </div>
-);
-
 class App extends React.Component {
-  postOnFb() {
-    FB.setAccessToken(accessToken);
-    const body = "My first post using facebook-node-sdk";
-    FB.api("me/feed", "post", { message: body }, function(res) {
+  share() {
+    const accessToken = FB.getAccessToken();
+    console.log(FB);
+    FB.api("4", function(res) {
       if (!res || res.error) {
         console.log(!res ? "error occurred" : res.error);
         return;
       }
-      console.log("Post Id: " + res.id);
+      console.log(res.id);
+      console.log(res.name);
     });
   }
   render() {
@@ -51,23 +50,8 @@ class App extends React.Component {
               </button>
             )}
           </Share> */}
-          <Feed
-            link="https://www.google.com"
-            redirectURI="https://www.google.com"
-            picture={img2}
-            data={img2}
-            description="test feed"
-            name="this is name"
-            caption="this is caption"
-          >
-            {({ handleClick }) => (
-              <button type="button" onClick={handleClick}>
-                Share on Feed
-              </button>
-            )}
-          </Feed>
         </FacebookProvider>
-        <button onClick={this.postOnFb}>Share with fb</button>
+        <button onClick={this.share}>Share</button>
       </div>
     );
   }
